@@ -61,7 +61,7 @@ const ListItem: React.FC<ToDo> = props => {
     });
   };
   return (
-    <Col xs={6} md={3} xl={2} className="mb-3">
+    <Col xs={6} md={4} lg={3} xl={2} className="mb-3">
       {state.isEditing ? (
         <Card>
           <form onSubmit={stopEditing}>
