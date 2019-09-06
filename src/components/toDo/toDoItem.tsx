@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Row, Col, Card, Button, ButtonGroup } from "react-bootstrap";
+import { Col, Card, Button, ButtonGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPen, faSave } from "@fortawesome/free-solid-svg-icons";
 import ToDo from "../../models/toDo";
@@ -84,7 +84,7 @@ const ListItem: React.FC<ToDo> = props => {
       ) : (
         <Card>
           <Card.Header className="d-flex align-items-baseline">
-            <h5 className="text-success">{props.title}</h5>
+            <h5 className="text-success text-break">{props.title}</h5>
             <ButtonGroup aria-label="Operations on to do" className="ml-auto">
               <Button variant="outline-success" onClick={setToEditing}>
                 <FontAwesomeIcon icon={faPen} />
