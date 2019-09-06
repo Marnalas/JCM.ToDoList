@@ -6,7 +6,7 @@ import Nav from "./nav/nav";
 
 const App: React.FC = () => {
   return (
-    <Container fluid={true} className="h-100">
+    <Container fluid>
       <Row>
         <Nav />
       </Row>
