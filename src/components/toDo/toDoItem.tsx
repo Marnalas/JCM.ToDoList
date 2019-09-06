@@ -56,9 +56,9 @@ const ListItem: React.FC<ToDo> = props => {
   return (
     <Col xs={12} sm={6} md={4} lg={3} xl={2} className="mb-3">
       {state.isEditing ? (
-        <Card>
+        <Card className="border-success">
           <form onSubmit={stopEditing}>
-            <Card.Header className="d-flex align-items-baseline">
+            <Card.Header className="d-flex align-items-baseline border-success">
               <input
                 type="text"
                 className="mr-auto form-control"
@@ -82,8 +82,8 @@ const ListItem: React.FC<ToDo> = props => {
           </form>
         </Card>
       ) : (
-        <Card>
-          <Card.Header className="d-flex align-items-baseline">
+        <Card className="border-success">
+          <Card.Header className="d-flex align-items-baseline border-success">
             <h5 className="text-success text-break">{props.title}</h5>
             <ButtonGroup aria-label="Operations on to do" className="ml-auto">
               <Button variant="outline-success" onClick={setToEditing}>
