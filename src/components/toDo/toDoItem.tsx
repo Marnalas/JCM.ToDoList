@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Col,
-  Card,
-  Button,
-  ButtonGroup,
-  Form,
-  FormControl
-} from "react-bootstrap";
+import { Row, Col, Card, Button, ButtonGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPen, faSave } from "@fortawesome/free-solid-svg-icons";
 import ToDo from "../../models/toDo";
@@ -61,7 +54,7 @@ const ListItem: React.FC<ToDo> = props => {
     });
   };
   return (
-    <Col xs={6} md={4} lg={3} xl={2} className="mb-3">
+    <Col xs={12} sm={6} md={4} lg={3} xl={2} className="mb-3">
       {state.isEditing ? (
         <Card>
           <form onSubmit={stopEditing}>
@@ -91,8 +84,8 @@ const ListItem: React.FC<ToDo> = props => {
       ) : (
         <Card>
           <Card.Header className="d-flex align-items-baseline">
-            <h5 className="mr-auto">{props.title}</h5>
-            <ButtonGroup aria-label="Operations on to do">
+            <h5 className="text-success">{props.title}</h5>
+            <ButtonGroup aria-label="Operations on to do" className="ml-auto">
               <Button variant="outline-success" onClick={setToEditing}>
                 <FontAwesomeIcon icon={faPen} />
               </Button>

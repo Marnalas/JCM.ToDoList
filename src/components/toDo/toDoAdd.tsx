@@ -16,7 +16,7 @@ const ToDoAdd: React.FC = () => {
       type: ToDoActionTypes.ADD_ACTION,
       payload: [
         {
-          id: Math.random().toString(),
+          id: (Math.random() * 10 ** 17).toString(),
           order:
             state.toDos.length > 0
               ? 1 + Math.max.apply(Math, state.toDos.map(toDo => toDo.order))
