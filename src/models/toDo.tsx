@@ -1,3 +1,6 @@
+/**
+ * A ToDo item.
+ */
 export default interface ToDo {
   id: string;
   order: number;

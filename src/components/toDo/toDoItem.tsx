@@ -7,6 +7,10 @@ import { ToDoActionTypes } from "../../stateManagement/definitions/toDoDefinitio
 import { useToDoDispatch } from "../../stateManagement/contexts/toDoContext";
 import { handleToDoAction } from "../../stateManagement/middlewares/toDoFirebaseMiddleware";
 
+/**
+ * A component to render a ToDo item.
+ * @param props The ToDo item to render.
+ */
 const ListItem: React.FC<ToDo> = props => {
   const dispatch = useToDoDispatch();
   const [state, setState] = useState({
@@ -16,11 +20,18 @@ const ListItem: React.FC<ToDo> = props => {
   const titleInput = React.createRef<HTMLInputElement>();
   const descriptionInput = React.createRef<HTMLInputElement>();
 
+  /**
+   * Sets the state to editing.
+   */
   const setToEditing = () => {
     setState({
       isEditing: true
     });
   };
+  /**
+   * Sets the state to not editing and saves the modifications.
+   * @param e The event that triggered the call to this method.
+   */
   const stopEditing = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setState({
@@ -39,6 +50,9 @@ const ListItem: React.FC<ToDo> = props => {
       ]
     });
   };
+  /**
+   * Sets the ToDo item to completed.
+   */
   const completeToDo = () => {
     handleToDoAction(dispatch)({
       type: ToDoActionTypes.COMPLETE_ACTION,

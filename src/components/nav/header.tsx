@@ -3,7 +3,10 @@ import { Navbar, Nav, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
-const nav: React.FC = () => {
+/**
+ * A component for the website navigation.
+ */
+const Header: React.FC = () => {
   return (
     <header className="col-12 p-0 mb-3">
       <Navbar bg="success" variant="dark" className="d-flex">
@@ -21,4 +24,4 @@ const nav: React.FC = () => {
   );
 };
 
-export default nav;
+export default Header;

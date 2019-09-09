@@ -4,6 +4,11 @@ import {
   ToDoActionTypes
 } from "../definitions/toDoDefinitions";
 
+/**
+ * Updates the state with a specific action.
+ * @param state The state to update.
+ * @param action The action to update the update with.
+ */
 const toDoReducer = (state: ToDoState, action: ToDoAction): ToDoState => {
   switch (action.type) {
     case ToDoActionTypes.ADD_ACTION: {

@@ -6,9 +6,15 @@ import { handleToDoAction } from "../../stateManagement/middlewares/toDoFirebase
 import ToDoList from "./toDoList";
 import ToDoAdd from "./toDoAdd";
 
+/**
+ * A component to contain all ToDo components.
+ */
 const ToDoContainer: React.FC = () => {
   const dispatch = useToDoDispatch();
 
+  /**
+   * Once the component is loaded then the state is loaded with the ToDo data.
+   */
   useEffect(() => {
     handleToDoAction(dispatch)({
       type: ToDoActionTypes.FETCH_ACTIONS,

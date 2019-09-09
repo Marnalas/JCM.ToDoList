@@ -7,10 +7,15 @@ import {
 import { ToDoActionTypes } from "../../stateManagement/definitions/toDoDefinitions";
 import { handleToDoAction } from "../../stateManagement/middlewares/toDoFirebaseMiddleware";
 
+/**
+ * A component to add ToDo items.
+ */
 const ToDoAdd: React.FC = () => {
   const state = useToDoState();
   const dispatch = useToDoDispatch();
-
+  /**
+   * Adds a new ToDo item to the state.
+   */
   const addToDo = () => {
     handleToDoAction(dispatch)({
       type: ToDoActionTypes.ADD_ACTION,

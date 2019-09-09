@@ -3,6 +3,9 @@ import { Row, Col, Jumbotron } from "react-bootstrap";
 import ToDoItem from "./toDoItem";
 import { useToDoState } from "../../stateManagement/contexts/toDoContext";
 
+/**
+ * A component to render a list of ToDo items.
+ */
 const ToDoList: React.FC = () => {
   const state = useToDoState();
 
