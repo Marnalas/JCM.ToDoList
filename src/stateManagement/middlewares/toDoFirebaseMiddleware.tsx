@@ -58,7 +58,7 @@ const fetchToDos = (fetchAction: ToDoAction) => async (
       const data = doc.data();
       return {
         id: doc.id,
-        user: doc.user,
+        user: data.user,
         order: data.order,
         title: data.title,
         description: data.description,
