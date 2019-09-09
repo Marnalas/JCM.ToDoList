@@ -27,7 +27,7 @@ const Connect: React.FC = () => {
   useEffect(() => {
     handleUserAction(dispatch)({
       type: UserActionTypes.READ_SESSION_ACTION,
-      payload: []
+      payload: {}
     });
   }, [dispatch]);
 
