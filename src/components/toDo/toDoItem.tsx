@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Col, Card, Button, ButtonGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPen, faSave } from "@fortawesome/free-solid-svg-icons";
@@ -7,18 +7,23 @@ import { ToDoActionTypes } from "../../stateManagement/definitions/toDoDefinitio
 import { useToDoDispatch } from "../../stateManagement/contexts/toDoContext";
 import { handleToDoAction } from "../../stateManagement/middlewares/toDoFirebaseMiddleware";
 
+export interface ToDoItemProps {
+  toDo: Partial<ToDo>;
+}
 /**
  * A component to render a ToDo item.
  * @param props The ToDo item to render.
  */
-const ListItem: React.FC<ToDo> = props => {
+const ListItem: React.FC<Partial<ToDo>> = props => {
   const dispatch = useToDoDispatch();
   const [state, setState] = useState({
     isEditing: false
   });
 
-  const titleInput = React.createRef<HTMLInputElement>();
-  const descriptionInput = React.createRef<HTMLInputElement>();
+  // const titleInput = React.createRef<HTMLInputElement>();
+  // const descriptionInput = React.createRef<HTMLInputElement>();
+  const titleInput = useRef(null);
+  const descriptionInput = useRef(null);
 
   /**
    * Sets the state to editing.
@@ -42,10 +47,8 @@ const ListItem: React.FC<ToDo> = props => {
       payload: [
         {
           id: props.id,
-          order: props.order,
           title: (titleInput.current || { value: "" }).value,
-          description: (descriptionInput.current || { value: "" }).value,
-          isDone: props.isDone
+          description: (descriptionInput.current || { value: "" }).value
         }
       ]
     });
@@ -59,9 +62,6 @@ const ListItem: React.FC<ToDo> = props => {
       payload: [
         {
           id: props.id,
-          order: props.order,
-          title: props.title,
-          description: props.description,
           isDone: true
         }
       ]

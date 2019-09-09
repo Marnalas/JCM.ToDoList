@@ -5,21 +5,22 @@ import { ToDoActionTypes } from "../../stateManagement/definitions/toDoDefinitio
 import { handleToDoAction } from "../../stateManagement/middlewares/toDoFirebaseMiddleware";
 import ToDoList from "./toDoList";
 import ToDoAdd from "./toDoAdd";
+import { useUserState } from "../../stateManagement/contexts/userContext";
 
 /**
  * A component to contain all ToDo components.
  */
 const ToDoContainer: React.FC = () => {
   const dispatch = useToDoDispatch();
+  const userState = useUserState();
 
-  /**
-   * Once the component is loaded then the state is loaded with the ToDo data.
-   */
+  // Once the component is loaded then the state is loaded with the ToDo data.
   useEffect(() => {
-    handleToDoAction(dispatch)({
-      type: ToDoActionTypes.FETCH_ACTIONS,
-      payload: []
-    });
+    if (userState.user.isAuthenticated)
+      handleToDoAction(dispatch)({
+        type: ToDoActionTypes.FETCH_ACTIONS,
+        payload: [{ user: userState.user.email }]
+      });
   });
 
   return (

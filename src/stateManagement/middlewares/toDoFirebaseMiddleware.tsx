@@ -15,6 +15,7 @@ const addToDo = (addToDoAction: ToDoAction) => async (
   const addToDo = addToDoAction.payload[0];
   try {
     await toDosCollection.doc(addToDo.id).set({
+      user: addToDo.user,
       order: addToDo.order,
       title: addToDo.title,
       description: addToDo.description
@@ -50,11 +51,14 @@ const fetchToDos = (fetchAction: ToDoAction) => async (
   dispatch: ToDoDispatcher
 ) => {
   try {
-    const querySnapshot = await toDosCollection.get();
+    const querySnapshot = await toDosCollection
+      .where("user", "==", fetchAction.payload[0].user)
+      .get();
     fetchAction.payload = querySnapshot.docs.map(doc => {
       const data = doc.data();
       return {
         id: doc.id,
+        user: doc.user,
         order: data.order,
         title: data.title,
         description: data.description,

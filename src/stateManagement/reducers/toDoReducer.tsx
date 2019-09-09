@@ -41,7 +41,7 @@ const toDoReducer = (state: ToDoState, action: ToDoAction): ToDoState => {
       return { toDos: [...action.payload] };
     }
     default: {
-      throw new Error(`Unhandled action type: ${action.type}`);
+      throw new Error(`toDoReducer: unhandled action type: ${action.type}`);
     }
   }
 };

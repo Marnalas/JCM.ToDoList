@@ -1,5 +1,6 @@
 import React from "react";
-import { Navbar, Nav, Button } from "react-bootstrap";
+import { Navbar, Nav } from "react-bootstrap";
+import Connect from "../user/connect";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
@@ -16,7 +17,7 @@ const Header: React.FC = () => {
         </Navbar.Brand>
         <Nav className="ml-auto">
           <Nav.Item>
-            <Button variant="light">Connect</Button>
+            <Connect />
           </Nav.Item>
         </Nav>
       </Navbar>

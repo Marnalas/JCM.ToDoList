@@ -4,6 +4,7 @@ import {
   useToDoDispatch,
   useToDoState
 } from "../../stateManagement/contexts/toDoContext";
+import { useUserState } from "../../stateManagement/contexts/userContext";
 import { ToDoActionTypes } from "../../stateManagement/definitions/toDoDefinitions";
 import { handleToDoAction } from "../../stateManagement/middlewares/toDoFirebaseMiddleware";
 
@@ -13,6 +14,7 @@ import { handleToDoAction } from "../../stateManagement/middlewares/toDoFirebase
 const ToDoAdd: React.FC = () => {
   const state = useToDoState();
   const dispatch = useToDoDispatch();
+  const userState = useUserState();
   /**
    * Adds a new ToDo item to the state.
    */
@@ -22,9 +24,11 @@ const ToDoAdd: React.FC = () => {
       payload: [
         {
           id: (Math.random() * 10 ** 17).toString(),
+          user: userState.user.email,
           order:
             state.toDos.length > 0
-              ? 1 + Math.max.apply(Math, state.toDos.map(toDo => toDo.order))
+              ? 1 +
+                Math.max.apply(Math, state.toDos.map(toDo => toDo.order || 0))
               : 0,
           title: "New task",
           description: "What I have to do",
@@ -35,9 +39,13 @@ const ToDoAdd: React.FC = () => {
   };
 
   return (
-    <Button variant="success" onClick={addToDo}>
-      Add something to do
-    </Button>
+    <>
+      {(userState.user.isAuthenticated || false) && (
+        <Button variant="success" onClick={addToDo}>
+          Add something to do
+        </Button>
+      )}
+    </>
   );
 };
 

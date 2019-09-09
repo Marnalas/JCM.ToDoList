@@ -15,7 +15,7 @@ export enum ToDoActionTypes {
  */
 export interface ToDoAction {
   type: ToDoActionTypes;
-  payload: ToDo[];
+  payload: Partial<ToDo>[];
 }
 
 /**
@@ -27,5 +27,5 @@ export type ToDoDispatcher = (action: ToDoAction) => void;
  * The structure of a state for the ToDoContext.
  */
 export interface ToDoState {
-  toDos: ToDo[];
+  toDos: Partial<ToDo>[];
 }
