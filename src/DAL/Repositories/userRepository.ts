@@ -1,5 +1,6 @@
 import { firebase, firebaseConfig } from "../firebase";
 import User from "../../models/user";
+import { setError } from "../../definitions/errorDefinitions";
 
 /**
  * Exposes all the mecanisms to interact with the users.
@@ -8,7 +9,10 @@ export class UserRepository {
   /**
    * Reads the session and logs in the user if possible.
    */
-  readSession = () => async (successBehavior: (user: User) => void) => {
+  readSession = () => async (
+    successBehavior: (user: User) => void,
+    errorBehavior: setError
+  ) => {
     let user = {
       isAuthenticated: false,
       email: "",
@@ -24,10 +28,11 @@ export class UserRepository {
         user.email = userObj.email;
         console.log(`readSession OK ${user.email}`);
       } else console.log(`readSession OK no session`);
+      successBehavior(user);
     } catch (error) {
       console.log(`readSession KO ${error.message}`);
+      errorBehavior(true, error.message);
     }
-    return successBehavior(user);
   };
 
   /**
@@ -35,7 +40,8 @@ export class UserRepository {
    * @param user The user to register.
    */
   signUpUser = (user: Partial<User>) => async (
-    successBehavior: (user: Partial<User>) => void
+    successBehavior: (user: Partial<User>) => void,
+    errorBehavior: setError
   ) => {
     try {
       await firebase
@@ -49,10 +55,11 @@ export class UserRepository {
         user.password = "";
       }
       console.log(`signUpUser OK ${user.email}`);
+      successBehavior(user);
     } catch (error) {
       console.log(`signUpUser KO ${error.message}`);
+      errorBehavior(true, error.message);
     }
-    return successBehavior(user);
   };
 
   /**
@@ -60,7 +67,8 @@ export class UserRepository {
    * @param user The user to sign in.
    */
   loginUser = (user: Partial<User>) => async (
-    successBehavior: (user: Partial<User>) => void
+    successBehavior: (user: Partial<User>) => void,
+    errorBehavior: setError
   ) => {
     try {
       await firebase
@@ -74,10 +82,11 @@ export class UserRepository {
         user.password = "";
       }
       console.log(`loginUser OK ${user.email}`);
+      successBehavior(user);
     } catch (error) {
       console.log(`loginUser KO ${error.message}`);
+      errorBehavior(true, error.message);
     }
-    return successBehavior(user);
   };
 
   /**
@@ -85,7 +94,8 @@ export class UserRepository {
    * @param user The user to sign in.
    */
   loginUserWithGoogle = (user: Partial<User>) => async (
-    successBehavior: (user: Partial<User>) => void
+    successBehavior: (user: Partial<User>) => void,
+    errorBehavior: setError
   ) => {
     try {
       await firebase
@@ -98,11 +108,12 @@ export class UserRepository {
         user.isAuthenticated = true;
         user.email = res.user.email;
         console.log(`loginUserWithGoogle OK ${user.email}`);
+        successBehavior(user);
       }
     } catch (error) {
       console.log(`loginUserWithGoogle KO ${error.message}`);
+      errorBehavior(true, error.message);
     }
-    return successBehavior(user);
   };
 
   /**
@@ -110,7 +121,8 @@ export class UserRepository {
    * @param user The user to log out.
    */
   signOutUser = (user: Partial<User>) => async (
-    successBehavior: (user: Partial<User>) => void
+    successBehavior: (user: Partial<User>) => void,
+    errorBehavior: setError
   ) => {
     try {
       await firebase.auth().signOut();
@@ -120,9 +132,10 @@ export class UserRepository {
         password: ""
       };
       console.log(`signOutUser OK`);
+      successBehavior(user);
     } catch (error) {
       console.log(`signOutUser KO ${error.message}`);
+      errorBehavior(true, error.message);
     }
-    return successBehavior(user);
   };
 }

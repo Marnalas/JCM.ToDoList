@@ -1,5 +1,6 @@
 import { toDosCollection } from "../firebase";
 import ToDo from "../../models/toDo";
+import { setError } from "../../definitions/errorDefinitions";
 
 /**
  * Exposes all the mecanisms to interact with the ToDo items.
@@ -10,7 +11,8 @@ export class ToDoRepository {
    * @param addToDo The ToDo item to save.
    */
   saveToDo = (addToDo: ToDo) => async (
-    successBehavior: (toDo: ToDo) => void
+    successBehavior: (toDo: ToDo) => void,
+    errorBehavior: setError
   ) => {
     try {
       await toDosCollection.doc(addToDo.id).set({
@@ -20,10 +22,11 @@ export class ToDoRepository {
         description: addToDo.description
       });
       console.log(`addToDo OK ${addToDo.id}`);
+      successBehavior(addToDo);
     } catch (error) {
       console.log(`addToDo KO ${error.message}`);
+      errorBehavior(true, error.message);
     }
-    successBehavior(addToDo);
   };
 
   /**
@@ -31,15 +34,17 @@ export class ToDoRepository {
    * @param completeToDo The ToDo item to complete.
    */
   completeToDo = (completeToDo: ToDo) => async (
-    successBehavior: (toDo: ToDo) => void
+    successBehavior: (toDo: ToDo) => void,
+    errorBehavior: setError
   ) => {
     try {
       await toDosCollection.doc(completeToDo.id).delete();
       console.log(`completeToDo OK ${completeToDo.id}`);
+      successBehavior(completeToDo);
     } catch (error) {
       console.log(`completeToDo KO ${error.message}`);
+      errorBehavior(true, error.message);
     }
-    successBehavior(completeToDo);
   };
 
   /**
@@ -47,7 +52,8 @@ export class ToDoRepository {
    * @param email The email of the user.
    */
   fetchToDos = (email: string) => async (
-    successBehavior: (toDos: ToDo[]) => void
+    successBehavior: (toDos: ToDo[]) => void,
+    errorBehavior: setError
   ) => {
     let toDos;
     try {
@@ -66,9 +72,10 @@ export class ToDoRepository {
         };
       });
       console.log("fetchToDos OK");
+      successBehavior(toDos);
     } catch (error) {
       console.log(`fetchToDos KO ${error.message}`);
+      errorBehavior(true, error.message);
     }
-    successBehavior(toDos);
   };
 }

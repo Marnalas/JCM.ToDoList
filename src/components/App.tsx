@@ -6,6 +6,7 @@ import { useUserDispatch } from "../stateManagement/contexts/userContext";
 import { useEffect } from "react";
 import { UserActionTypes } from "../definitions/userDefinitions";
 import { handleUserAction } from "../stateManagement/middlewares/userFirebaseMiddleware";
+import { alertErrorBoundary } from "./errorBoundaries/alertErrorBoundary";
 
 /**
  * The main container for the websie.
@@ -15,7 +16,7 @@ const App: React.FC = () => {
 
   // Checking the session for an authenticated user.
   useEffect(() => {
-    handleUserAction(dispatch)({
+    handleUserAction(dispatch, () => false, (hasError, error) => false)({
       type: UserActionTypes.READ_SESSION_ACTION,
       payload: {}
     });
@@ -28,7 +29,7 @@ const App: React.FC = () => {
       </Row>
       <Row>
         <Col xs={12}>
-          <ToDoContainer />
+          {React.createElement(alertErrorBoundary(ToDoContainer))}
         </Col>
       </Row>
     </Container>

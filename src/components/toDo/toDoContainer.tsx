@@ -4,11 +4,14 @@ import ToDoList from "./toDoList";
 import { ToDoRepository } from "../../DAL/Repositories/toDoRepository";
 import { useUserState } from "../../stateManagement/contexts/userContext";
 import ToDo from "../../models/toDo";
+import { alertErrorBoundaryWrappedComponentProps } from "../errorBoundaries/alertErrorBoundary";
 
 /**
  * A component to contain and manage all ToDo components.
  */
-const ToDoContainer: React.FC = () => {
+const ToDoContainer: React.FC<alertErrorBoundaryWrappedComponentProps> = (
+  props: alertErrorBoundaryWrappedComponentProps
+) => {
   const userState = useUserState();
   const [state, setState] = useState<Partial<ToDo[]>>([]);
   const toDoRepository = new ToDoRepository();
@@ -16,9 +19,10 @@ const ToDoContainer: React.FC = () => {
   // Once the component is loaded then the state is loaded with the ToDo data.
   useEffect(() => {
     if (userState.user.isAuthenticated)
-      new ToDoRepository().fetchToDos(userState.user.email)(toDos =>
-        setState(toDos)
-      );
+      new ToDoRepository().fetchToDos(userState.user.email)(toDos => {
+        props.setError(false, undefined);
+        setState(toDos);
+      }, props.setError);
   }, [userState.user.isAuthenticated, userState.user.email]);
 
   /**
@@ -35,7 +39,10 @@ const ToDoContainer: React.FC = () => {
       title: "New task",
       description: "What I have to do",
       isDone: false
-    })(toDo => setState([...state, toDo]));
+    })(toDo => {
+      props.setError(false, undefined);
+      setState([...state, toDo]);
+    }, props.setError);
   };
 
   /**
@@ -50,13 +57,14 @@ const ToDoContainer: React.FC = () => {
       ...state[toDoIndex],
       title: title,
       description: description
-    })(toDo =>
+    })(toDo => {
+      props.setError(false, undefined);
       setState([
         ...state.slice(0, toDoIndex),
         toDo,
         ...state.slice(toDoIndex + 1, state.length)
-      ])
-    );
+      ]);
+    }, props.setError);
   };
 
   /**
@@ -68,16 +76,18 @@ const ToDoContainer: React.FC = () => {
     toDoRepository.completeToDo({
       ...state[toDoIndex],
       isDone: true
-    })(toDo =>
+    })(toDo => {
+      props.setError(false, undefined);
       setState([
         ...state.slice(0, toDoIndex),
         ...state.slice(toDoIndex + 1, state.length)
-      ])
-    );
+      ]);
+    }, props.setError);
   };
 
   return (
     <>
+      {props.renderError()}
       <Row>
         {!userState.user.isAuthenticated || false ? (
           <Col xs={12}>

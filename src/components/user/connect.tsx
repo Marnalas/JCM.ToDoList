@@ -9,11 +9,14 @@ import {
 } from "../../stateManagement/contexts/userContext";
 import { UserActionTypes } from "../../definitions/userDefinitions";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { alertErrorBoundaryWrappedComponentProps } from "../errorBoundaries/alertErrorBoundary";
 
 /**
  * A component to handle the connection of the user.
  */
-const Connect: React.FC = () => {
+const Connect: React.FC<alertErrorBoundaryWrappedComponentProps> = (
+  props: alertErrorBoundaryWrappedComponentProps
+) => {
   const state = useUserState();
   const dispatch = useUserDispatch();
 
@@ -28,6 +31,7 @@ const Connect: React.FC = () => {
    * Toggles the overlay display.
    */
   const toggleOverlay = () => {
+    props.setError(false, undefined);
     setOverlayState(!overlayState);
   };
 
@@ -36,8 +40,7 @@ const Connect: React.FC = () => {
    * @param actionType The logging action to use.
    */
   const connect = (actionType: UserActionTypes) => {
-    toggleOverlay();
-    handleUserAction(dispatch)({
+    handleUserAction(dispatch, toggleOverlay, props.setError)({
       type: actionType,
       payload: {
         email: (mailInput.current || { value: "" }).value,
@@ -50,8 +53,7 @@ const Connect: React.FC = () => {
    * Disconnects the user.
    */
   const signOut = () => {
-    toggleOverlay();
-    handleUserAction(dispatch)({
+    handleUserAction(dispatch, toggleOverlay, props.setError)({
       type: UserActionTypes.SIGNOUT_ACTION,
       payload: {}
     });
@@ -82,6 +84,7 @@ const Connect: React.FC = () => {
             </Popover.Title>
             <Popover.Content>
               <Container fluid>
+                <Row>{props.renderError()}</Row>
                 <Row className="mb-2">
                   <Col xs={12}>
                     <input

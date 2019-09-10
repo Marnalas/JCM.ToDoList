@@ -3,6 +3,7 @@ import { Navbar, Nav } from "react-bootstrap";
 import Connect from "../user/connect";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { alertErrorBoundary } from "../errorBoundaries/alertErrorBoundary";
 
 /**
  * A component for the website navigation.
@@ -17,7 +18,7 @@ const Header: React.FC = () => {
         </Navbar.Brand>
         <Nav className="ml-auto">
           <Nav.Item>
-            <Connect />
+            {React.createElement(alertErrorBoundary(Connect))}
           </Nav.Item>
         </Nav>
       </Navbar>
