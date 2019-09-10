@@ -87,7 +87,9 @@ const ToDoContainer: React.FC<alertErrorBoundaryWrappedComponentProps> = (
 
   return (
     <>
-      {props.renderError()}
+      <Row>
+        <Col xs={12}>{props.renderError()}</Col>
+      </Row>
       <Row>
         {!userState.user.isAuthenticated || false ? (
           <Col xs={12}>

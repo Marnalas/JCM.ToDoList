@@ -84,7 +84,9 @@ const Connect: React.FC<alertErrorBoundaryWrappedComponentProps> = (
             </Popover.Title>
             <Popover.Content>
               <Container fluid>
-                <Row>{props.renderError()}</Row>
+                <Row>
+                  <Col xs={12}>{props.renderError()}</Col>
+                </Row>
                 <Row className="mb-2">
                   <Col xs={12}>
                     <input
