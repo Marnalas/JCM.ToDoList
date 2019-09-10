@@ -1,6 +1,10 @@
 import React from "react";
-import { UserDispatcher, UserState } from "../definitions/userDefinitions";
-import userReducer from "../reducers/userReducer";
+import {
+  UserDispatcher,
+  UserState,
+  UserAction,
+  UserActionTypes
+} from "../../definitions/userDefinitions";
 
 /*
 This splitting is from this article https://kentcdodds.com/blog/how-to-use-react-context-effectively.
@@ -11,6 +15,26 @@ const UserDispatchContext = React.createContext<UserDispatcher | undefined>(
   undefined
 );
 
+/**
+ * Updates the state with a specific action.
+ * @param state The state to update.
+ * @param action The action to update the update with.
+ */
+const userReducer = (state: UserState, action: UserAction): UserState => {
+  switch (action.type) {
+    case UserActionTypes.READ_SESSION_ACTION:
+    case UserActionTypes.SIGNUP_ACTION:
+    case UserActionTypes.LOGIN_ACTION:
+    case UserActionTypes.LOGIN_GOOGLE_ACTION:
+    case UserActionTypes.SIGNOUT_ACTION: {
+      return { user: action.payload };
+    }
+    default: {
+      throw new Error(`userReducer : unhandled action type: ${action.type}`);
+    }
+  }
+};
+
 interface UserProviderProps {
   children: React.ReactNode;
 }
@@ -18,9 +42,9 @@ interface UserProviderProps {
  * The provider component for the UserContext.
  * @param param0 The object containing the children of the component.
  */
-const UserProvider = ({ children }: UserProviderProps) => {
+export const UserProvider = ({ children }: UserProviderProps) => {
   const [state, dispatch] = React.useReducer(userReducer, {
-    user: { isAuthenticated: false, email: "", password: "", token: "" }
+    user: { isAuthenticated: false, email: "", password: "" }
   });
 
   return (
@@ -35,7 +59,7 @@ const UserProvider = ({ children }: UserProviderProps) => {
 /**
  * Returns the state for the UserContext.
  */
-const useUserState = () => {
+export const useUserState = () => {
   const context = React.useContext(UserStateContext);
   if (context === undefined)
     throw new Error("useUserState must be used within a UserProvider");
@@ -45,11 +69,9 @@ const useUserState = () => {
 /**
  * Returns the dispatch for the UserContext.
  */
-const useUserDispatch = () => {
+export const useUserDispatch = () => {
   const context = React.useContext(UserDispatchContext);
   if (context === undefined)
     throw new Error("useUserDispatch must be used within a UserProvider");
   return context;
 };
-
-export { UserProvider, useUserState, useUserDispatch };

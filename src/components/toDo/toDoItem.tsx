@@ -3,19 +3,21 @@ import { Col, Card, Button, ButtonGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPen, faSave } from "@fortawesome/free-solid-svg-icons";
 import ToDo from "../../models/toDo";
-import { ToDoActionTypes } from "../../stateManagement/definitions/toDoDefinitions";
-import { useToDoDispatch } from "../../stateManagement/contexts/toDoContext";
-import { handleToDoAction } from "../../stateManagement/middlewares/toDoFirebaseMiddleware";
 
+/**
+ * The props of the ToDoItem component.
+ */
 export interface ToDoItemProps {
   toDo: Partial<ToDo>;
+  updateToDo: (id: string, title: string, description: string) => void;
+  completeToDo: (id: string) => void;
 }
+
 /**
  * A component to render a ToDo item.
- * @param props The ToDo item to render.
+ * @param props
  */
-const ListItem: React.FC<Partial<ToDo>> = props => {
-  const dispatch = useToDoDispatch();
+const ToDoItem: React.FC<ToDoItemProps> = (props: ToDoItemProps) => {
   const [state, setState] = useState({
     isEditing: false
   });
@@ -33,6 +35,7 @@ const ListItem: React.FC<Partial<ToDo>> = props => {
       isEditing: true
     });
   };
+
   /**
    * Sets the state to not editing and saves the modifications.
    * @param e The event that triggered the call to this method.
@@ -42,31 +45,13 @@ const ListItem: React.FC<Partial<ToDo>> = props => {
     setState({
       isEditing: false
     });
-    handleToDoAction(dispatch)({
-      type: ToDoActionTypes.UPDATE_ACTION,
-      payload: [
-        {
-          id: props.id,
-          title: (titleInput.current || { value: "" }).value,
-          description: (descriptionInput.current || { value: "" }).value
-        }
-      ]
-    });
+    props.updateToDo(
+      props.toDo.id,
+      (titleInput.current || { value: "" }).value,
+      (descriptionInput.current || { value: "" }).value
+    );
   };
-  /**
-   * Sets the ToDo item to completed.
-   */
-  const completeToDo = () => {
-    handleToDoAction(dispatch)({
-      type: ToDoActionTypes.COMPLETE_ACTION,
-      payload: [
-        {
-          id: props.id,
-          isDone: true
-        }
-      ]
-    });
-  };
+
   return (
     <Col xs={12} sm={6} md={4} lg={3} xl={2} className="mb-3">
       {state.isEditing ? (
@@ -76,7 +61,7 @@ const ListItem: React.FC<Partial<ToDo>> = props => {
               <input
                 type="text"
                 className="mr-auto form-control"
-                defaultValue={props.title}
+                defaultValue={props.toDo.title}
                 ref={titleInput}
               />
               <Button type="submit" variant="outline-success" className="ml-2">
@@ -88,7 +73,7 @@ const ListItem: React.FC<Partial<ToDo>> = props => {
                 <input
                   type="text"
                   className="form-control"
-                  defaultValue={props.description}
+                  defaultValue={props.toDo.description}
                   ref={descriptionInput}
                 />
               </Card.Text>
@@ -98,22 +83,25 @@ const ListItem: React.FC<Partial<ToDo>> = props => {
       ) : (
         <Card className="border-success">
           <Card.Header className="d-flex align-items-baseline border-success">
-            <h5 className="text-success text-break">{props.title}</h5>
+            <h5 className="text-success text-break">{props.toDo.title}</h5>
             <ButtonGroup aria-label="Operations on to do" className="ml-auto">
               <Button variant="outline-success" onClick={setToEditing}>
                 <FontAwesomeIcon icon={faPen} />
               </Button>
-              <Button variant="outline-success" onClick={completeToDo}>
+              <Button
+                variant="outline-success"
+                onClick={() => props.completeToDo(props.toDo.id)}
+              >
                 <FontAwesomeIcon icon={faCheck} />
               </Button>
             </ButtonGroup>
           </Card.Header>
           <Card.Body>
-            <Card.Text>{props.description}</Card.Text>
+            <Card.Text>{props.toDo.description}</Card.Text>
           </Card.Body>
         </Card>
       )}
     </Col>
   );
 };
-export default ListItem;
+export default ToDoItem;

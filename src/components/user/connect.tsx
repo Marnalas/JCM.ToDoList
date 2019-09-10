@@ -1,13 +1,13 @@
 import { Button, Row, Col, Popover, Container, Overlay } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { handleUserAction } from "../../stateManagement/middlewares/userFirebaseMiddleware";
 import {
   useUserDispatch,
   useUserState
 } from "../../stateManagement/contexts/userContext";
-import { UserActionTypes } from "../../stateManagement/definitions/userDefinitions";
+import { UserActionTypes } from "../../definitions/userDefinitions";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 
 /**
@@ -24,32 +24,11 @@ const Connect: React.FC = () => {
   const passwordInput = useRef(null);
   const overlayTarget = useRef(null);
 
-  useEffect(() => {
-    handleUserAction(dispatch)({
-      type: UserActionTypes.READ_SESSION_ACTION,
-      payload: {}
-    });
-  }, [dispatch]);
-
   /**
    * Toggles the overlay display.
    */
   const toggleOverlay = () => {
     setOverlayState(!overlayState);
-  };
-
-  /**
-   * Registers the user.
-   */
-  const register = () => {
-    toggleOverlay();
-    handleUserAction(dispatch)({
-      type: UserActionTypes.SIGNUP_ACTION,
-      payload: {
-        email: (mailInput.current || { value: "" }).value,
-        password: (passwordInput.current || { value: "" }).value
-      }
-    });
   };
 
   /**
@@ -74,12 +53,7 @@ const Connect: React.FC = () => {
     toggleOverlay();
     handleUserAction(dispatch)({
       type: UserActionTypes.SIGNOUT_ACTION,
-      payload: {
-        isAuthenticated: false,
-        email: "",
-        password: "",
-        token: ""
-      }
+      payload: {}
     });
   };
 
@@ -136,7 +110,7 @@ const Connect: React.FC = () => {
                       id="register"
                       variant="link"
                       className="text-success"
-                      onClick={register}
+                      onClick={() => connect(UserActionTypes.SIGNUP_ACTION)}
                     >
                       Sign up
                     </Button>
@@ -177,9 +151,9 @@ const Connect: React.FC = () => {
             <Popover.Content>
               <Container fluid>
                 <Row>
-                  <Col xs={12}>
+                  <Col xs={12} className="d-flex">
                     <Button
-                      className="btn"
+                      className="btn flex-fill"
                       variant="outline-success"
                       onClick={signOut}
                     >
