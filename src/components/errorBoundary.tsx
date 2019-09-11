@@ -5,12 +5,9 @@ import React from "react";
  * Global error boundary catching any unhandled error.
  */
 class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
+  state = { hasError: false };
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: any, errorInfo: any) {
     console.log(`${error}`);
     console.log(`Error info: ${JSON.stringify(errorInfo)}`);
     this.setState({ hasError: true });

@@ -30,7 +30,7 @@ const ToDoContainer: React.FC<alertErrorBoundaryWrappedComponentProps> = (
    */
   const addToDo = () => {
     toDoRepository.saveToDo({
-      id: (Math.random() * 10 ** 17).toString(),
+      id: (Math.random() * 10 ** 18).toString(),
       user: userState.user.email,
       order:
         state.length > 0
@@ -107,7 +107,7 @@ const ToDoContainer: React.FC<alertErrorBoundaryWrappedComponentProps> = (
         )}
       </Row>
       {(userState.user.isAuthenticated || false) && (
-        <Row>
+        <Row className="mb-3">
           <Col xs={12}>
             <Button variant="success" onClick={addToDo}>
               Add something to do
