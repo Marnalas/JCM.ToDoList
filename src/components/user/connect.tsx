@@ -53,7 +53,7 @@ const Connect: React.FC<alertErrorBoundaryWrappedComponentProps> = (
    * Disconnects the user.
    */
   const signOut = () => {
-    handleUserAction(dispatch, toggleOverlay, props.setError)({
+    handleUserAction(dispatch, () => false, props.setError)({
       type: UserActionTypes.SIGNOUT_ACTION,
       payload: {}
     });
@@ -61,116 +61,101 @@ const Connect: React.FC<alertErrorBoundaryWrappedComponentProps> = (
 
   return (
     <>
-      <Button
-        variant="light"
-        className="btn"
-        onClick={toggleOverlay}
-        ref={overlayTarget}
-      >
-        {!state.user.isAuthenticated ? "Connect" : "My account"}
-      </Button>
-      <Overlay
-        show={overlayState}
-        placement="bottom-end"
-        target={overlayTarget.current}
-      >
-        {!state.user.isAuthenticated ? (
-          <Popover id="connectPopover" className="border-success">
-            <Popover.Title
-              as="h3"
-              className="text-success text-break border-success"
-            >
-              Connect to your task list
-            </Popover.Title>
-            <Popover.Content>
-              <Container fluid>
-                <Row>
-                  <Col xs={12}>{props.renderError()}</Col>
-                </Row>
-                <Row className="mb-2">
-                  <Col xs={12}>
-                    <input
-                      type="email"
-                      className="form-control"
-                      placeholder="Email"
-                      ref={mailInput}
-                      required
-                    />
-                  </Col>
-                </Row>
-                <Row className="mb-2">
-                  <Col xs={12}>
-                    <input
-                      type="password"
-                      className="form-control"
-                      placeholder="Password"
-                      ref={passwordInput}
-                      required
-                    />
-                  </Col>
-                </Row>
-                <Row className="mb-2">
-                  <Col xs={12} className="d-flex flex-row-reverse">
-                    <Button
-                      id="register"
-                      variant="link"
-                      className="text-success"
-                      onClick={() => connect(UserActionTypes.SIGNUP_ACTION)}
-                    >
-                      Sign up
-                    </Button>
-                    <Button
-                      id="connect"
-                      variant="link"
-                      className="text-success"
-                      onClick={() => connect(UserActionTypes.LOGIN_ACTION)}
-                    >
-                      Log in
-                    </Button>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={12} className="d-flex">
-                    <Button
-                      className="btn flex-fill"
-                      variant="outline-success"
-                      onClick={() =>
-                        connect(UserActionTypes.LOGIN_GOOGLE_ACTION)
-                      }
-                    >
-                      <FontAwesomeIcon icon={faGoogle} /> Log in using Google
-                    </Button>
-                  </Col>
-                </Row>
-              </Container>
-            </Popover.Content>
-          </Popover>
-        ) : (
-          <Popover id="connectPopover" className="border-success">
-            <Popover.Title
-              as="h3"
-              className="text-success text-break border-success"
-            >
-              {state.user.email}
-            </Popover.Title>
-            <Popover.Content>
-              <Container fluid>
-                <Row>
-                  <Col xs={12} className="d-flex">
-                    <Button
-                      className="btn flex-fill"
-                      variant="outline-success"
-                      onClick={signOut}
-                    >
-                      <FontAwesomeIcon icon={faSignOutAlt} /> Sign out
-                    </Button>
-                  </Col>
-                </Row>
-              </Container>
-            </Popover.Content>
-          </Popover>
-        )}
-      </Overlay>
+      {!state.user.isAuthenticated ? (
+        <>
+          <Button
+            variant="light"
+            className="btn"
+            onClick={toggleOverlay}
+            ref={overlayTarget}
+          >
+            {!state.user.isAuthenticated ? "Connect" : "My account"}
+          </Button>
+          <Overlay
+            show={overlayState}
+            placement="bottom-end"
+            target={overlayTarget.current}
+          >
+            <Popover id="connectPopover" className="border-success">
+              <Popover.Title
+                as="h3"
+                className="text-success text-break border-success"
+              >
+                Connect to your task list
+              </Popover.Title>
+              <Popover.Content>
+                <Container fluid>
+                  <Row>
+                    <Col xs={12}>{props.renderError()}</Col>
+                  </Row>
+                  <Row className="mb-2">
+                    <Col xs={12}>
+                      <input
+                        type="email"
+                        className="form-control"
+                        placeholder="Email"
+                        ref={mailInput}
+                        required
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="mb-2">
+                    <Col xs={12}>
+                      <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Password"
+                        ref={passwordInput}
+                        required
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="mb-2">
+                    <Col xs={12} className="d-flex flex-row-reverse">
+                      <Button
+                        id="register"
+                        variant="link"
+                        className="text-success"
+                        onClick={() => connect(UserActionTypes.SIGNUP_ACTION)}
+                      >
+                        Sign up
+                      </Button>
+                      <Button
+                        id="connect"
+                        variant="link"
+                        className="text-success"
+                        onClick={() => connect(UserActionTypes.LOGIN_ACTION)}
+                      >
+                        Log in
+                      </Button>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xs={12} className="d-flex">
+                      <Button
+                        className="btn flex-fill"
+                        variant="outline-success"
+                        onClick={() =>
+                          connect(UserActionTypes.LOGIN_GOOGLE_ACTION)
+                        }
+                      >
+                        <FontAwesomeIcon icon={faGoogle} /> Log in using Google
+                      </Button>
+                    </Col>
+                  </Row>
+                </Container>
+              </Popover.Content>
+            </Popover>
+          </Overlay>
+        </>
+      ) : (
+        <div className="text-white d-flex align-items-baseline">
+          {state.user.email}
+          <Button className="btn ml-2" variant="light" onClick={signOut}>
+            <FontAwesomeIcon icon={faSignOutAlt} />
+          </Button>
+        </div>
+      )}
     </>
   );
 };
