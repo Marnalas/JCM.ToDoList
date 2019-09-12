@@ -12,7 +12,7 @@ const Header: React.FC = () => {
   return (
     <header className="col-12 p-0 mb-3">
       <Navbar bg="success" variant="dark" className="d-flex">
-        <Navbar.Brand>
+        <Navbar.Brand href={window.location.href}>
           <FontAwesomeIcon icon={faPaperPlane} />
           {" Task force list"}
         </Navbar.Brand>

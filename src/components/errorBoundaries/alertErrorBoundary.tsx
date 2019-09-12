@@ -35,7 +35,9 @@ export const alertErrorBoundary = (
       return (
         <>
           {this.state.hasError && (
-            <Alert variant="danger">{this.state.error}</Alert>
+            <Alert variant="danger">
+              <strong>An error occurerd:</strong> {this.state.error}
+            </Alert>
           )}
         </>
       );

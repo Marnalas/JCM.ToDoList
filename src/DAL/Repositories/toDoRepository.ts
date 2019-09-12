@@ -21,10 +21,8 @@ export class ToDoRepository {
         title: addToDo.title,
         description: addToDo.description
       });
-      console.log(`addToDo OK ${addToDo.id}`);
       successBehavior(addToDo);
     } catch (error) {
-      console.log(`addToDo KO ${error.message}`);
       errorBehavior(true, error.message);
     }
   };
@@ -39,10 +37,8 @@ export class ToDoRepository {
   ) => {
     try {
       await toDosCollection.doc(completeToDo.id).delete();
-      console.log(`completeToDo OK ${completeToDo.id}`);
       successBehavior(completeToDo);
     } catch (error) {
-      console.log(`completeToDo KO ${error.message}`);
       errorBehavior(true, error.message);
     }
   };
@@ -71,10 +67,8 @@ export class ToDoRepository {
           isDone: false
         };
       });
-      console.log("fetchToDos OK");
       successBehavior(toDos);
     } catch (error) {
-      console.log(`fetchToDos KO ${error.message}`);
       errorBehavior(true, error.message);
     }
   };

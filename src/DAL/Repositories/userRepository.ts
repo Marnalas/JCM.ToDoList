@@ -27,8 +27,7 @@ export class UserRepository {
         const userObj = JSON.parse(userString);
         user.isAuthenticated = true;
         user.email = userObj.email;
-        console.log(`initializeAuth OK from session ${user.email}`);
-      } else if (isMobile()) {
+      } else {
         await firebase
           .auth()
           .setPersistence(firebase.auth.Auth.Persistence.SESSION);
@@ -36,9 +35,8 @@ export class UserRepository {
         if (res && res.user) {
           user.isAuthenticated = true;
           user.email = res.user.email;
-          console.log(`initializeAuth OK from redirect ${user.email}`);
-        } else console.log(`initializeAuth OK no session and no redirect`);
-      } else console.log(`initializeAuth OK no session and no redirect`);
+        }
+      }
       successBehavior(user);
     } catch (error) {
       console.log(`readSession KO ${error.message}`);
@@ -65,10 +63,8 @@ export class UserRepository {
         user.isAuthenticated = true;
         user.password = "";
       }
-      console.log(`signUpUser OK ${user.email}`);
       successBehavior(user);
     } catch (error) {
-      console.log(`signUpUser KO ${error.message}`);
       errorBehavior(true, error.message);
     }
   };
@@ -92,10 +88,8 @@ export class UserRepository {
         user.isAuthenticated = true;
         user.password = "";
       }
-      console.log(`loginUser OK ${user.email}`);
       successBehavior(user);
     } catch (error) {
-      console.log(`loginUser KO ${error.message}`);
       errorBehavior(true, error.message);
     }
   };
@@ -119,12 +113,10 @@ export class UserRepository {
         if (res) {
           user.isAuthenticated = true;
           user.email = res.user.email;
-          console.log(`loginUserWithGoogle OK ${user.email}`);
           successBehavior(user);
         }
       } else firebase.auth().signInWithRedirect(provider);
     } catch (error) {
-      console.log(`loginUserWithGoogle KO ${error.message}`);
       errorBehavior(true, error.message);
     }
   };
@@ -144,10 +136,8 @@ export class UserRepository {
         email: "",
         password: ""
       };
-      console.log(`signOutUser OK`);
       successBehavior(user);
     } catch (error) {
-      console.log(`signOutUser KO ${error.message}`);
       errorBehavior(true, error.message);
     }
   };

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 // Components imports
 import { UserProvider } from "./stateManagement/contexts/userContext";
-import ErrorBoundary from "./components/errorBoundary";
+import ErrorBoundary from "./components/errorBoundaries/globalErrorBoundary";
 import App from "./components/App";
 
 // Styling imports
