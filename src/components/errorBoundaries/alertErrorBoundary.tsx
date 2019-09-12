@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert } from "react-bootstrap";
+import { Alert, Row, Col } from "react-bootstrap";
 import { setError } from "../../definitions/errorDefinitions";
 
 /**
@@ -35,9 +35,13 @@ export const alertErrorBoundary = (
       return (
         <>
           {this.state.hasError && (
-            <Alert variant="danger">
-              <strong>An error occurerd:</strong> {this.state.error}
-            </Alert>
+            <Row>
+              <Col xs={12}>
+                <Alert variant="danger">
+                  <strong>An error occurred:</strong> {this.state.error}
+                </Alert>
+              </Col>
+            </Row>
           )}
         </>
       );

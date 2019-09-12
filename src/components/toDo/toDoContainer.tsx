@@ -88,9 +88,6 @@ const ToDoContainer: React.FC<alertErrorBoundaryWrappedComponentProps> = (
   return (
     <>
       <Row>
-        <Col xs={12}>{props.renderError()}</Col>
-      </Row>
-      <Row>
         {!userState.user.isAuthenticated || false ? (
           <Col xs={12}>
             <Jumbotron fluid className="px-3 mb-3">

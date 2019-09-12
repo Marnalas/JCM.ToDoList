@@ -11,12 +11,11 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap.css";
 
 import * as serviceWorker from "./serviceWorker";
+import { alertErrorBoundary } from "./components/errorBoundaries/alertErrorBoundary";
 
 ReactDOM.render(
   <ErrorBoundary>
-    <UserProvider>
-      <App />
-    </UserProvider>
+    <UserProvider>{React.createElement(alertErrorBoundary(App))}</UserProvider>
   </ErrorBoundary>,
   document.getElementById("root")
 );
