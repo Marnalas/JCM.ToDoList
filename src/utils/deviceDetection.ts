@@ -6,7 +6,7 @@ const matchUserAgent = (matcher: {
   [Symbol.match](string: string): RegExpMatchArray;
 }): boolean => {
   const match = navigator.userAgent.match(matcher);
-  return match !== null && match.length !== 0;
+  return match && match.length !== 0;
 };
 
 /**

@@ -27,15 +27,18 @@ export class UserRepository {
         const userObj = JSON.parse(userString);
         user.isAuthenticated = true;
         user.email = userObj.email;
-        console.log(`readSession OK ${user.email}`);
+        console.log(`initializeAuth OK from session ${user.email}`);
       } else if (isMobile()) {
+        await firebase
+          .auth()
+          .setPersistence(firebase.auth.Auth.Persistence.SESSION);
         const res = await firebase.auth().getRedirectResult();
-        if (res) {
+        if (res && res.user) {
           user.isAuthenticated = true;
           user.email = res.user.email;
-          console.log(`readSession OK ${user.email}`);
-        }
-      } else console.log(`readSession OK no session and no redirect`);
+          console.log(`initializeAuth OK from redirect ${user.email}`);
+        } else console.log(`initializeAuth OK no session and no redirect`);
+      } else console.log(`initializeAuth OK no session and no redirect`);
       successBehavior(user);
     } catch (error) {
       console.log(`readSession KO ${error.message}`);
