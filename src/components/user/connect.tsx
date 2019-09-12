@@ -149,8 +149,8 @@ const Connect: React.FC<alertErrorBoundaryWrappedComponentProps> = (
           </Overlay>
         </>
       ) : (
-        <div className="text-white d-flex align-items-baseline">
-          {state.user.email}
+        <div className="d-flex align-items-baseline">
+          <div className="text-white d-none d-sm-block">{state.user.email}</div>
           <Button className="btn ml-2" variant="light" onClick={signOut}>
             <FontAwesomeIcon icon={faSignOutAlt} />
           </Button>
