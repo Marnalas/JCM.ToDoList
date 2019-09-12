@@ -22,7 +22,7 @@ const UserDispatchContext = React.createContext<UserDispatcher | undefined>(
  */
 const userReducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
-    case UserActionTypes.READ_SESSION_ACTION:
+    case UserActionTypes.INITIALIZE_AUTH_ACTION:
     case UserActionTypes.SIGNUP_ACTION:
     case UserActionTypes.LOGIN_ACTION:
     case UserActionTypes.LOGIN_GOOGLE_ACTION:

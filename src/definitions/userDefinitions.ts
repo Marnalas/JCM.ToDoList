@@ -4,7 +4,7 @@ import User from "../models/user";
  * The different types of actions for the UserContext.
  */
 export enum UserActionTypes {
-  "READ_SESSION_ACTION",
+  "INITIALIZE_AUTH_ACTION",
   "SIGNUP_ACTION",
   "LOGIN_ACTION",
   "LOGIN_GOOGLE_ACTION",

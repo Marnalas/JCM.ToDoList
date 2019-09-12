@@ -8,9 +8,9 @@ import { isMobile } from "../../utils/deviceDetection";
  */
 export class UserRepository {
   /**
-   * Reads the session and logs in the user if possible.
+   * Reads the session or the redirect auth result and logs in the user if possible.
    */
-  readSession = () => async (
+  initializeAuth = () => async (
     successBehavior: (user: User) => void,
     errorBehavior: setError
   ) => {
@@ -28,7 +28,14 @@ export class UserRepository {
         user.isAuthenticated = true;
         user.email = userObj.email;
         console.log(`readSession OK ${user.email}`);
-      } else console.log(`readSession OK no session`);
+      } else if (isMobile()) {
+        const res = await firebase.auth().getRedirectResult();
+        if (res) {
+          user.isAuthenticated = true;
+          user.email = res.user.email;
+          console.log(`readSession OK ${user.email}`);
+        }
+      } else console.log(`readSession OK no session and no redirect`);
       successBehavior(user);
     } catch (error) {
       console.log(`readSession KO ${error.message}`);
@@ -104,15 +111,15 @@ export class UserRepository {
         .setPersistence(firebase.auth.Auth.Persistence.SESSION);
       const provider = new firebase.auth.GoogleAuthProvider();
       provider.addScope("email");
-      const res = await (isMobile()
-        ? firebase.auth().signInWithRedirect(provider)
-        : firebase.auth().signInWithPopup(provider));
-      if (res) {
-        user.isAuthenticated = true;
-        user.email = res.user.email;
-        console.log(`loginUserWithGoogle OK ${user.email}`);
-        successBehavior(user);
-      }
+      if (!isMobile()) {
+        const res = await firebase.auth().signInWithPopup(provider);
+        if (res) {
+          user.isAuthenticated = true;
+          user.email = res.user.email;
+          console.log(`loginUserWithGoogle OK ${user.email}`);
+          successBehavior(user);
+        }
+      } else firebase.auth().signInWithRedirect(provider);
     } catch (error) {
       console.log(`loginUserWithGoogle KO ${error.message}`);
       errorBehavior(true, error.message);

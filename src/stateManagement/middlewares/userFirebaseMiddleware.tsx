@@ -23,8 +23,8 @@ const dispatchUserAction = (
       return dispatch({ ...action, payload: user });
     };
     switch (action.type) {
-      case UserActionTypes.READ_SESSION_ACTION: {
-        return userRepository.readSession()(dispatchAction, errorBehavior);
+      case UserActionTypes.INITIALIZE_AUTH_ACTION: {
+        return userRepository.initializeAuth()(dispatchAction, errorBehavior);
       }
       case UserActionTypes.SIGNUP_ACTION: {
         return userRepository.signUpUser(action.payload)(

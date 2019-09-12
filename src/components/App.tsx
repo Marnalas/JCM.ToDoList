@@ -14,10 +14,10 @@ import { alertErrorBoundary } from "./errorBoundaries/alertErrorBoundary";
 const App: React.FC = () => {
   const dispatch = useUserDispatch();
 
-  // Checking the session for an authenticated user.
+  // Trying to get the current user.
   useEffect(() => {
     handleUserAction(dispatch, () => false, (hasError, error) => false)({
-      type: UserActionTypes.READ_SESSION_ACTION,
+      type: UserActionTypes.INITIALIZE_AUTH_ACTION,
       payload: {}
     });
   });
