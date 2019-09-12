@@ -1,6 +1,7 @@
 import { firebase, firebaseConfig } from "../firebase";
 import User from "../../models/user";
 import { setError } from "../../definitions/errorDefinitions";
+import { isMobile } from "../../utils/deviceDetection";
 
 /**
  * Exposes all the mecanisms to interact with the users.
@@ -103,7 +104,9 @@ export class UserRepository {
         .setPersistence(firebase.auth.Auth.Persistence.SESSION);
       const provider = new firebase.auth.GoogleAuthProvider();
       provider.addScope("email");
-      const res = await firebase.auth().signInWithPopup(provider);
+      const res = await (isMobile()
+        ? firebase.auth().signInWithRedirect(provider)
+        : firebase.auth().signInWithPopup(provider));
       if (res) {
         user.isAuthenticated = true;
         user.email = res.user.email;
