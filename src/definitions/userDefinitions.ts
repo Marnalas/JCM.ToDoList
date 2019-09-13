@@ -1,4 +1,4 @@
-import User from "../models/user";
+import User from "../models/User";
 
 /**
  * The different types of actions for the UserContext.
