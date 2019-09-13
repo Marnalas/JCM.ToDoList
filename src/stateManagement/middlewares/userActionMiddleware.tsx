@@ -3,51 +3,55 @@ import {
   UserActionTypes,
   UserDispatcher
 } from "../../definitions/userDefinitions";
-import { UserRepository } from "../../DAL/Repositories/userRepository";
-import User from "../../models/user";
+import { UserRepository } from "../../DAL/Repositories/UserRepository";
+import User from "../../models/User";
 import { setError } from "../../definitions/errorDefinitions";
 
 /**
  * Dispatches an action for database concerns.
  * @param dispatch The state dispatcher to use.
  */
-const dispatchUserAction = (
+const userActionMiddleware = (
   dispatch: UserDispatcher,
-  successBehavior: () => void,
-  errorBehavior: setError
+  successCallback: () => void,
+  errorCallback: setError
 ) => {
   const userRepository = new UserRepository();
   return (action: UserAction) => {
     const dispatchAction = (user: Partial<User>) => {
-      successBehavior();
+      successCallback();
       return dispatch({ ...action, payload: user });
     };
     switch (action.type) {
       case UserActionTypes.INITIALIZE_AUTH_ACTION: {
-        return userRepository.initializeAuth()(dispatchAction, errorBehavior);
+        return userRepository.initializeAuth(dispatchAction, errorCallback);
       }
       case UserActionTypes.SIGNUP_ACTION: {
-        return userRepository.signUpUser(action.payload)(
+        return userRepository.signUpUser(
+          action.payload,
           dispatchAction,
-          errorBehavior
+          errorCallback
         );
       }
       case UserActionTypes.LOGIN_ACTION: {
-        return userRepository.loginUser(action.payload)(
+        return userRepository.loginUser(
+          action.payload,
           dispatchAction,
-          errorBehavior
+          errorCallback
         );
       }
       case UserActionTypes.LOGIN_GOOGLE_ACTION: {
-        return userRepository.loginUserWithGoogle(action.payload)(
+        return userRepository.loginUserWithGoogle(
+          action.payload,
           dispatchAction,
-          errorBehavior
+          errorCallback
         );
       }
       case UserActionTypes.SIGNOUT_ACTION: {
-        return userRepository.signOutUser(action.payload)(
+        return userRepository.signOutUser(
+          action.payload,
           dispatchAction,
-          errorBehavior
+          errorCallback
         );
       }
       default: {
@@ -57,4 +61,4 @@ const dispatchUserAction = (
   };
 };
 
-export { dispatchUserAction as handleUserAction };
+export { userActionMiddleware as handleUserAction };

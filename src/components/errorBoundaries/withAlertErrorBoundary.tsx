@@ -13,7 +13,7 @@ export interface alertErrorBoundaryWrappedComponentProps {
 /**
  * Global error boundary catching any unhandled error.
  */
-export const alertErrorBoundary = (
+export const withAlertErrorBoundary = (
   WrappedComponent: React.FC<alertErrorBoundaryWrappedComponentProps>
 ) => {
   /**

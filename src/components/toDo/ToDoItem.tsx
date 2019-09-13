@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Col, Card, Button, ButtonGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPen, faSave } from "@fortawesome/free-solid-svg-icons";
-import ToDo from "../../models/toDo";
+import ToDo from "../../models/ToDo";
 
 /**
  * The props of the ToDoItem component.
@@ -22,8 +22,6 @@ const ToDoItem: React.FC<ToDoItemProps> = (props: ToDoItemProps) => {
     isEditing: false
   });
 
-  // const titleInput = React.createRef<HTMLInputElement>();
-  // const descriptionInput = React.createRef<HTMLInputElement>();
   const titleInput = useRef(null);
   const descriptionInput = useRef(null);
 

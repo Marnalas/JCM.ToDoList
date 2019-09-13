@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Button, Jumbotron } from "react-bootstrap";
-import ToDoList from "./toDoList";
-import { ToDoRepository } from "../../DAL/Repositories/toDoRepository";
+import ToDoList from "./ToDoList";
+import { ToDoRepository } from "../../DAL/Repositories/ToDoRepository";
 import { useUserState } from "../../stateManagement/contexts/userContext";
-import ToDo from "../../models/toDo";
-import { alertErrorBoundaryWrappedComponentProps } from "../errorBoundaries/alertErrorBoundary";
+import ToDo from "../../models/ToDo";
+import { alertErrorBoundaryWrappedComponentProps } from "../errorBoundaries/withAlertErrorBoundary";
 
 /**
  * A component to contain and manage all ToDo components.
@@ -19,30 +19,39 @@ const ToDoContainer: React.FC<alertErrorBoundaryWrappedComponentProps> = (
   // Once the component is loaded then the state is loaded with the ToDo data.
   useEffect(() => {
     if (userState.user.isAuthenticated)
-      new ToDoRepository().fetchToDos(userState.user.email)(toDos => {
-        props.setError(false, undefined);
-        setState(toDos);
-      }, props.setError);
+      new ToDoRepository().fetchToDos(
+        userState.user.email,
+        toDos => {
+          props.setError(false, undefined);
+          toDos.sort((prevToDo, nextToDo) => prevToDo.order - nextToDo.order);
+          setState(toDos);
+        },
+        props.setError
+      );
   }, [userState.user.isAuthenticated, userState.user.email]);
 
   /**
    * Adds a ToDo item.
    */
   const addToDo = () => {
-    toDoRepository.saveToDo({
-      id: (Math.random() * 10 ** 18).toString(),
-      user: userState.user.email,
-      order:
-        state.length > 0
-          ? 1 + Math.max.apply(Math, state.map(toDo => toDo.order || 0))
-          : 0,
-      title: "New task",
-      description: "What I have to do",
-      isDone: false
-    })(toDo => {
-      props.setError(false, undefined);
-      setState([...state, toDo]);
-    }, props.setError);
+    toDoRepository.saveToDo(
+      {
+        id: (Math.random() * 10 ** 18).toString(),
+        user: userState.user.email,
+        order:
+          state.length > 0
+            ? 1 + Math.max.apply(Math, state.map(toDo => toDo.order || 0))
+            : 0,
+        title: "New task",
+        description: "What I have to do",
+        isDone: false
+      },
+      toDo => {
+        props.setError(false, undefined);
+        setState([...state, toDo]);
+      },
+      props.setError
+    );
   };
 
   /**
@@ -53,18 +62,22 @@ const ToDoContainer: React.FC<alertErrorBoundaryWrappedComponentProps> = (
    */
   const updateToDo = (id: string, title: string, description: string) => {
     const toDoIndex = state.map(toDo => toDo.id).indexOf(id);
-    toDoRepository.saveToDo({
-      ...state[toDoIndex],
-      title: title,
-      description: description
-    })(toDo => {
-      props.setError(false, undefined);
-      setState([
-        ...state.slice(0, toDoIndex),
-        toDo,
-        ...state.slice(toDoIndex + 1, state.length)
-      ]);
-    }, props.setError);
+    toDoRepository.saveToDo(
+      {
+        ...state[toDoIndex],
+        title: title,
+        description: description
+      },
+      toDo => {
+        props.setError(false, undefined);
+        setState([
+          ...state.slice(0, toDoIndex),
+          toDo,
+          ...state.slice(toDoIndex + 1, state.length)
+        ]);
+      },
+      props.setError
+    );
   };
 
   /**
@@ -73,16 +86,20 @@ const ToDoContainer: React.FC<alertErrorBoundaryWrappedComponentProps> = (
    */
   const completeToDo = (id: string) => {
     const toDoIndex = state.map(toDo => toDo.id).indexOf(id);
-    toDoRepository.completeToDo({
-      ...state[toDoIndex],
-      isDone: true
-    })(toDo => {
-      props.setError(false, undefined);
-      setState([
-        ...state.slice(0, toDoIndex),
-        ...state.slice(toDoIndex + 1, state.length)
-      ]);
-    }, props.setError);
+    toDoRepository.completeToDo(
+      {
+        ...state[toDoIndex],
+        isDone: true
+      },
+      toDo => {
+        props.setError(false, undefined);
+        setState([
+          ...state.slice(0, toDoIndex),
+          ...state.slice(toDoIndex + 1, state.length)
+        ]);
+      },
+      props.setError
+    );
   };
 
   return (

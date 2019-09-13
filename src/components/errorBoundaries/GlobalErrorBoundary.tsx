@@ -5,7 +5,7 @@ import { Container, Row, Col, Alert } from "react-bootstrap";
  * https://reactjs.org/docs/error-boundaries.html
  * Global error boundary catching any unhandled error.
  */
-class ErrorBoundary extends React.Component {
+class GlobalErrorBoundary extends React.Component {
   state = { hasError: false, error: "" };
 
   componentDidCatch(error: any, errorInfo: any) {
@@ -36,4 +36,4 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-export default ErrorBoundary;
+export default GlobalErrorBoundary;

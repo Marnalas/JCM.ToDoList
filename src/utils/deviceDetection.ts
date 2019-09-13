@@ -32,16 +32,11 @@ const isWindows = (): boolean => matchUserAgent(/IEMobile/i);
 
 /**
  * Is the used device mobile ?
+ * Does not cover every case.
  */
 export const isMobile = (): boolean => {
-  // console.log(navigator.userAgent);
-  // console.log(isAndroid());
-  // console.log(isBlackBerry());
-  // console.log(isiOS());
-  // console.log(isOpera());
-  // console.log(isWindows());
-  // console.log(
-  //   isAndroid() || isBlackBerry() || isiOS() || isOpera() || isWindows()
-  // );
   return isAndroid() || isBlackBerry() || isiOS() || isOpera() || isWindows();
 };
+
+// Documentation: https://github.com/hgoebl/mobile-detect.js/blob/master/mobile-detect.js
+// or https://github.com/mrdoob/system.js/blob/master/src/System.js

@@ -1,12 +1,12 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import ToDoContainer from "./toDo/toDoContainer";
-import Header from "./nav/header";
+import ToDoContainer from "./toDo/ToDoContainer";
+import Header from "./nav/Header";
 import { useUserDispatch } from "../stateManagement/contexts/userContext";
 import { useEffect } from "react";
 import { UserActionTypes } from "../definitions/userDefinitions";
-import { handleUserAction } from "../stateManagement/middlewares/userFirebaseMiddleware";
-import { alertErrorBoundaryWrappedComponentProps } from "./errorBoundaries/alertErrorBoundary";
+import { handleUserAction } from "../stateManagement/middlewares/userActionMiddleware";
+import { alertErrorBoundaryWrappedComponentProps } from "./errorBoundaries/withAlertErrorBoundary";
 
 /**
  * The main container for the websie.

@@ -2,14 +2,14 @@ import { Button, Row, Col, Popover, Container, Overlay } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import React, { useState, useRef } from "react";
-import { handleUserAction } from "../../stateManagement/middlewares/userFirebaseMiddleware";
+import { handleUserAction } from "../../stateManagement/middlewares/userActionMiddleware";
 import {
   useUserDispatch,
   useUserState
 } from "../../stateManagement/contexts/userContext";
 import { UserActionTypes } from "../../definitions/userDefinitions";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
-import { alertErrorBoundaryWrappedComponentProps } from "../errorBoundaries/alertErrorBoundary";
+import { alertErrorBoundaryWrappedComponentProps } from "../errorBoundaries/WithAlertErrorBoundary";
 
 /**
  * A component to handle the connection of the user.

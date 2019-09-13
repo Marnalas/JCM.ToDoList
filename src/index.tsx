@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 // Components imports
 import { UserProvider } from "./stateManagement/contexts/userContext";
-import ErrorBoundary from "./components/errorBoundaries/globalErrorBoundary";
+import GlobalErrorBoundary from "./components/errorBoundaries/GlobalErrorBoundary";
 import App from "./components/App";
 
 // Styling imports
@@ -11,12 +11,16 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap.css";
 
 import * as serviceWorker from "./serviceWorker";
-import { alertErrorBoundary } from "./components/errorBoundaries/alertErrorBoundary";
+import { withAlertErrorBoundary } from "./components/errorBoundaries/withAlertErrorBoundary";
+
+const AppWithAlertError = withAlertErrorBoundary(App);
 
 ReactDOM.render(
-  <ErrorBoundary>
-    <UserProvider>{React.createElement(alertErrorBoundary(App))}</UserProvider>
-  </ErrorBoundary>,
+  <GlobalErrorBoundary>
+    <UserProvider>
+      <AppWithAlertError />
+    </UserProvider>
+  </GlobalErrorBoundary>,
   document.getElementById("root")
 );
 

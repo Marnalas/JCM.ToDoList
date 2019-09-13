@@ -1,5 +1,5 @@
 import { firebase, firebaseConfig } from "../firebase";
-import User from "../../models/user";
+import User from "../../models/User";
 import { setError } from "../../definitions/errorDefinitions";
 import { isMobile } from "../../utils/deviceDetection";
 
@@ -9,12 +9,14 @@ import { isMobile } from "../../utils/deviceDetection";
 export class UserRepository {
   /**
    * Reads the session or the redirect auth result and logs in the user if possible.
+   * @param successCallback The callback when success.
+   * @param errorCallback The callback when an error occurres.
    */
-  initializeAuth = () => async (
-    successBehavior: (user: User) => void,
-    errorBehavior: setError
+  initializeAuth = async (
+    successCallback: (user: User) => void,
+    errorCallback: setError
   ) => {
-    let user = {
+    const user = {
       isAuthenticated: false,
       email: "",
       password: ""
@@ -37,20 +39,23 @@ export class UserRepository {
           user.email = res.user.email;
         }
       }
-      successBehavior(user);
+      successCallback(user);
     } catch (error) {
       console.log(`readSession KO ${error.message}`);
-      errorBehavior(true, error.message);
+      errorCallback(true, error.message);
     }
   };
 
   /**
    * Registers the user then connects him.
    * @param user The user to register.
+   * @param successCallback The callback when success.
+   * @param errorCallback The callback when an error occurres.
    */
-  signUpUser = (user: Partial<User>) => async (
-    successBehavior: (user: Partial<User>) => void,
-    errorBehavior: setError
+  signUpUser = async (
+    user: Partial<User>,
+    successCallback: (user: Partial<User>) => void,
+    errorCallback: setError
   ) => {
     try {
       await firebase
@@ -63,19 +68,22 @@ export class UserRepository {
         user.isAuthenticated = true;
         user.password = "";
       }
-      successBehavior(user);
+      successCallback(user);
     } catch (error) {
-      errorBehavior(true, error.message);
+      errorCallback(true, error.message);
     }
   };
 
   /**
    * Signs the user in.
    * @param user The user to sign in.
+   * @param successCallback The callback when success.
+   * @param errorCallback The callback when an error occurres.
    */
-  loginUser = (user: Partial<User>) => async (
-    successBehavior: (user: Partial<User>) => void,
-    errorBehavior: setError
+  loginUser = async (
+    user: Partial<User>,
+    successCallback: (user: Partial<User>) => void,
+    errorCallback: setError
   ) => {
     try {
       await firebase
@@ -88,19 +96,22 @@ export class UserRepository {
         user.isAuthenticated = true;
         user.password = "";
       }
-      successBehavior(user);
+      successCallback(user);
     } catch (error) {
-      errorBehavior(true, error.message);
+      errorCallback(true, error.message);
     }
   };
 
   /**
    * Signs the user in using google.
    * @param user The user to sign in.
+   * @param successCallback The callback when success.
+   * @param errorCallback The callback when an error occurres.
    */
-  loginUserWithGoogle = (user: Partial<User>) => async (
-    successBehavior: (user: Partial<User>) => void,
-    errorBehavior: setError
+  loginUserWithGoogle = async (
+    user: Partial<User>,
+    successCallback: (user: Partial<User>) => void,
+    errorCallback: setError
   ) => {
     try {
       await firebase
@@ -113,21 +124,24 @@ export class UserRepository {
         if (res) {
           user.isAuthenticated = true;
           user.email = res.user.email;
-          successBehavior(user);
+          successCallback(user);
         }
       } else firebase.auth().signInWithRedirect(provider);
     } catch (error) {
-      errorBehavior(true, error.message);
+      errorCallback(true, error.message);
     }
   };
 
   /**
    * Logs out the user.
    * @param user The user to log out.
+   * @param successCallback The callback when success.
+   * @param errorCallback The callback when an error occurres.
    */
-  signOutUser = (user: Partial<User>) => async (
-    successBehavior: (user: Partial<User>) => void,
-    errorBehavior: setError
+  signOutUser = async (
+    user: Partial<User>,
+    successCallback: (user: Partial<User>) => void,
+    errorCallback: setError
   ) => {
     try {
       await firebase.auth().signOut();
@@ -136,9 +150,9 @@ export class UserRepository {
         email: "",
         password: ""
       };
-      successBehavior(user);
+      successCallback(user);
     } catch (error) {
-      errorBehavior(true, error.message);
+      errorCallback(true, error.message);
     }
   };
 }

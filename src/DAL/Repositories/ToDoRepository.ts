@@ -1,5 +1,5 @@
 import { toDosCollection } from "../firebase";
-import ToDo from "../../models/toDo";
+import ToDo from "../../models/ToDo";
 import { setError } from "../../definitions/errorDefinitions";
 
 /**
@@ -8,11 +8,13 @@ import { setError } from "../../definitions/errorDefinitions";
 export class ToDoRepository {
   /**
    * Saves a ToDo item in the database.
-   * @param addToDo The ToDo item to save.
+   * @param successCallback The callback when success.
+   * @param errorCallback The callback when an error occurres.
    */
-  saveToDo = (addToDo: ToDo) => async (
-    successBehavior: (toDo: ToDo) => void,
-    errorBehavior: setError
+  saveToDo = async (
+    addToDo: ToDo,
+    successCallback: (toDo: ToDo) => void,
+    errorCallback: setError
   ) => {
     try {
       await toDosCollection.doc(addToDo.id).set({
@@ -21,35 +23,41 @@ export class ToDoRepository {
         title: addToDo.title,
         description: addToDo.description
       });
-      successBehavior(addToDo);
+      successCallback(addToDo);
     } catch (error) {
-      errorBehavior(true, error.message);
+      errorCallback(true, error.message);
     }
   };
 
   /**
    * Removes the ToDo from the database as it is now done.
    * @param completeToDo The ToDo item to complete.
+   * @param successCallback The callback when success.
+   * @param errorCallback The callback when an error occurres.
    */
-  completeToDo = (completeToDo: ToDo) => async (
-    successBehavior: (toDo: ToDo) => void,
-    errorBehavior: setError
+  completeToDo = async (
+    completeToDo: ToDo,
+    successCallback: (toDo: ToDo) => void,
+    errorCallback: setError
   ) => {
     try {
       await toDosCollection.doc(completeToDo.id).delete();
-      successBehavior(completeToDo);
+      successCallback(completeToDo);
     } catch (error) {
-      errorBehavior(true, error.message);
+      errorCallback(true, error.message);
     }
   };
 
   /**
    * Retrieves all the ToDo items of a user from the database.
    * @param email The email of the user.
+   * @param successCallback The callback when success.
+   * @param errorCallback The callback when an error occurres.
    */
-  fetchToDos = (email: string) => async (
-    successBehavior: (toDos: ToDo[]) => void,
-    errorBehavior: setError
+  fetchToDos = async (
+    email: string,
+    successCallback: (toDos: ToDo[]) => void,
+    errorCallback: setError
   ) => {
     let toDos;
     try {
@@ -67,9 +75,9 @@ export class ToDoRepository {
           isDone: false
         };
       });
-      successBehavior(toDos);
+      successCallback(toDos);
     } catch (error) {
-      errorBehavior(true, error.message);
+      errorCallback(true, error.message);
     }
   };
 }
