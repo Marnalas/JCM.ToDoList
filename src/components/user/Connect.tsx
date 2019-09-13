@@ -9,7 +9,7 @@ import {
 } from "../../stateManagement/contexts/userContext";
 import { UserActionTypes } from "../../definitions/userDefinitions";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
-import { alertErrorBoundaryWrappedComponentProps } from "../errorBoundaries/WithAlertErrorBoundary";
+import { alertErrorBoundaryWrappedComponentProps } from "../errorBoundaries/withAlertErrorBoundary";
 
 /**
  * A component to handle the connection of the user.
