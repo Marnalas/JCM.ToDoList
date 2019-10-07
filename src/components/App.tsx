@@ -5,7 +5,6 @@ import Header from "./nav/Header";
 import { useUserDispatch } from "../stateManagement/contexts/userContext";
 import { useEffect } from "react";
 import { UserActionTypes } from "../definitions/userDefinitions";
-import { handleUserAction } from "../stateManagement/middlewares/userActionMiddleware";
 import { alertErrorBoundaryWrappedComponentProps } from "./errorBoundaries/withAlertErrorBoundary";
 
 /**
@@ -18,14 +17,14 @@ const App: React.FC<alertErrorBoundaryWrappedComponentProps> = (
 
   // Trying to get the current user.
   useEffect(() => {
-    handleUserAction(
-      dispatch,
+    dispatch(
+      {
+        type: UserActionTypes.INITIALIZE_AUTH_ACTION,
+        payload: {}
+      },
       () => false,
       (hasError, error) => props.setError(hasError, error)
-    )({
-      type: UserActionTypes.INITIALIZE_AUTH_ACTION,
-      payload: {}
-    });
+    );
   }, [dispatch]);
 
   return (

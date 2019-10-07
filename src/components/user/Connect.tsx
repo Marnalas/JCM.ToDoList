@@ -2,7 +2,6 @@ import { Button, Row, Col, Popover, Container, Overlay } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import React, { useState, useRef } from "react";
-import { handleUserAction } from "../../stateManagement/middlewares/userActionMiddleware";
 import {
   useUserDispatch,
   useUserState
@@ -40,23 +39,31 @@ const Connect: React.FC<alertErrorBoundaryWrappedComponentProps> = (
    * @param actionType The logging action to use.
    */
   const connect = (actionType: UserActionTypes) => {
-    handleUserAction(dispatch, toggleOverlay, props.setError)({
-      type: actionType,
-      payload: {
-        email: (mailInput.current || { value: "" }).value,
-        password: (passwordInput.current || { value: "" }).value
-      }
-    });
+    dispatch(
+      {
+        type: actionType,
+        payload: {
+          email: (mailInput.current || { value: "" }).value,
+          password: (passwordInput.current || { value: "" }).value
+        }
+      },
+      toggleOverlay,
+      props.setError
+    );
   };
 
   /**
    * Disconnects the user.
    */
   const signOut = () => {
-    handleUserAction(dispatch, () => false, props.setError)({
-      type: UserActionTypes.SIGNOUT_ACTION,
-      payload: {}
-    });
+    dispatch(
+      {
+        type: UserActionTypes.SIGNOUT_ACTION,
+        payload: {}
+      },
+      () => false,
+      props.setError
+    );
   };
 
   return (

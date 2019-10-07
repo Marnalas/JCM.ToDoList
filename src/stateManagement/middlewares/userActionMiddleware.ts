@@ -11,13 +11,13 @@ import { setError } from "../../definitions/errorDefinitions";
  * Dispatches an action for database concerns.
  * @param dispatch The state dispatcher to use.
  */
-const userActionMiddleware = (
-  dispatch: UserDispatcher,
-  successCallback: () => void,
-  errorCallback: setError
-) => {
+const userActionMiddleware = (dispatch: UserDispatcher) => {
   const userRepository = new UserRepository();
-  return (action: UserAction) => {
+  return (
+    action: UserAction,
+    successCallback: () => void,
+    errorCallback: setError
+  ) => {
     const dispatchAction = (user: Partial<User>) => {
       successCallback();
       return dispatch({ ...action, payload: user });

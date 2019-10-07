@@ -5,6 +5,7 @@ import {
   UserAction,
   UserActionTypes
 } from "../../definitions/userDefinitions";
+import { handleUserAction } from "../middlewares/userActionMiddleware";
 
 /*
 This splitting is from this article https://kentcdodds.com/blog/how-to-use-react-context-effectively.
@@ -73,5 +74,5 @@ export const useUserDispatch = () => {
   const context = React.useContext(UserDispatchContext);
   if (context === undefined)
     throw new Error("useUserDispatch must be used within a UserProvider");
-  return context;
+  return handleUserAction(context);
 };
